@@ -76,7 +76,8 @@ class DataGenerator(Dataset):
         #prob_map_big = create_probability_map(loss_map_big, self.d_input_shape)
         #prob_map_sml = create_probability_map(nn_interpolation(loss_map_sml, int(1 / scale_factor)), self.g_input_shape)
         prob_map_big = create_probability_map_video(loss_map_big, self.d_input_shape)
-        prob_map_sml = create_probability_map_video(nn_interpolation(loss_map_sml, int(1 / scale_factor)), self.g_input_shape)
+        loss_map_sml = list(map(lambda x: nn_interpolation(x, int(1 / scale_factor),loss_map_sml))
+        prob_map_sml = create_probability_map_video(loss_map_sml, self.g_input_shape)
         
         return prob_map_big, prob_map_sml
 
