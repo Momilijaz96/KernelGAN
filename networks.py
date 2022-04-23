@@ -16,8 +16,8 @@ class Generator(nn.Module):
             feature_block += [nn.Conv3d(in_channels=conf.G_chan, out_channels=conf.G_chan, kernel_size=(kdepth,struct[layer],struct[layer]), stride=(kpdeth,1,1),bias=False)]
         self.feature_block = nn.Sequential(*feature_block)
         # Final layer - Down-sampling and converting back to image
-        self.final_layer = nn.Conv3d(in_channels=conf.G_chan, out_channels=1, kernel_size=(kdepth,struct[-1],struct[-1]),stride=(kpdeth,1,1),
-                                     stride=int(1 / conf.scale_factor), bias=False)
+        self.final_layer = nn.Conv3d(in_channels=conf.G_chan, out_channels=1, kernel_size=(kdepth,struct[-1],struct[-1]),stride=(kpdeth,1/conf.scale_factor,1/conf.scale_factor),
+                                     bias=False)
 
         # Calculate number of pixels shaved in the forward pass
         self.output_size = self.forward(torch.FloatTensor(torch.ones([1, kdepth, conf.input_crop_size, conf.input_crop_size, 3]))).shape[-1]
