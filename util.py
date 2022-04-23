@@ -71,7 +71,7 @@ def read_video(video_path):
         frames.append(frame)
     vidcap.release()
     assert len(frames) == frame_count
-    frames = torch.from_numpy(np.stack(frames))
+    frames = np.stack(frames)
     return frames #DxHxWxC
 
 
