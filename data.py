@@ -61,8 +61,8 @@ class DataGenerator(Dataset):
     def make_list_of_crop_indices(self, conf):
         iterations = conf.max_iters
         prob_map_big, prob_map_sml = self.create_prob_maps(scale_factor=conf.scale_factor)
-        crop_indices_for_g = np.random.choice(a=len(prob_map_sml), size=iterations, p=prob_map_sml[0])
-        crop_indices_for_d = np.random.choice(a=len(prob_map_big), size=iterations, p=prob_map_big[0])
+        crop_indices_for_g = np.random.choice(a=len(prob_map_sml[0]), size=iterations, p=prob_map_sml[0])
+        crop_indices_for_d = np.random.choice(a=len(prob_map_big[0]), size=iterations, p=prob_map_big[0])
         return crop_indices_for_g, crop_indices_for_d
 
     def create_prob_maps(self, scale_factor):
