@@ -13,16 +13,17 @@ class DataGenerator(Dataset):
     def __init__(self, conf, gan):
         # Default shapes
         self.g_input_shape = conf.input_crop_size
-        self.d_input_shape = gan.G.output_size  # shape entering D downscaled by G
+        self.d_input_shape = gan.G.output_size  # h or w shape entering D downscaled by G
         self.d_output_shape = self.d_input_shape - gan.D.forward_shave
 
-        # Read input image
+        # Read input video
         #self.input_image = read_image(conf.input_image_path) / 255.
         self.input_video = read_video(conf.input_video_path) / 255. #DxHxWxC
-        self.shave_edges(scale_factor=conf.scale_factor, real_image=conf.real_image)
+        self.shave_edges(scale_factor=conf.scale_factor, real_image=conf.real_image) #FIX later for ZSSR
 
-        self.in_rows, self.in_cols = self.input_image.shape[0:2]
-
+        #self.in_rows, self.in_cols = self.input_image.shape[0:2]
+        self.in_depth, self.in_rows, self.in_cols = self.input_video.shape[:3]
+        
         # Create prob map for choosing the crop
         self.crop_indices_for_g, self.crop_indices_for_d = self.make_list_of_crop_indices(conf=conf)
 
@@ -31,15 +32,12 @@ class DataGenerator(Dataset):
 
     def __getitem__(self, idx):
         """Get a crop for both G and D """
-        g_in = self.next_crop(for_g=True, idx=idx)
-        d_in = self.next_crop(for_g=False, idx=idx)
+        #g_in = self.next_crop(for_g=True, idx=idx)
+        #d_in = self.next_crop(for_g=False, idx=idx)
+        g_in = self.next_tube(for_g=True, idx=idx)
+        d_in = self.next_tube(for_g=False, idx=idx)
 
         return g_in, d_in
-
-    def vid2images(self):
-        """Convert video file to images"""
-        video = self.input_video
-        torch.reshape(video,()) #DxHxWxC -> 
 
 
     def next_crop(self, for_g, idx):
@@ -50,6 +48,15 @@ class DataGenerator(Dataset):
         if not for_g:  # Add noise to the image for d
             crop_im += np.random.randn(*crop_im.shape) / 255.0
         return im2tensor(crop_im)
+    
+    def next_tube(self, for_g, idx):
+        """Return a tube according to the pre-determined list of indices. Noise is added to tubes for D"""
+        size = self.g_input_shape if for_g else self.d_input_shape
+        top, left = self.get_top_left(size, for_g, idx)
+        crop_tube = self.input_video[:, top:top + size, left:left + size, :] #Tube extracted from input video
+        if not for_g:  # Add noise to the image for d
+            crop_tube += np.random.randn(*crop_tube.shape) / 255.0
+        return im2tensor(crop_tube)
 
     def make_list_of_crop_indices(self, conf):
         iterations = conf.max_iters
