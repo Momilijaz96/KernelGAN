@@ -35,7 +35,7 @@ class DataGenerator(Dataset):
         #g_in = self.next_crop(for_g=True, idx=idx)
         #d_in = self.next_crop(for_g=False, idx=idx)
         g_in = self.next_tube(for_g=True, idx=idx)
-        d_in = self.next_tube(for_g=False, idx=idx
+        d_in = self.next_tube(for_g=False, idx=idx)
 
         return g_in, d_in
 
