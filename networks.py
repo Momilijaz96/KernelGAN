@@ -20,7 +20,7 @@ class Generator(nn.Module):
                                      bias=False)
 
         # Calculate number of pixels shaved in the forward pass
-        self.output_size = self.forward(torch.FloatTensor(torch.ones([1, kdepth, conf.input_crop_size, conf.input_crop_size, 3]))).shape[-1]
+        self.output_size = self.forward(torch.FloatTensor(torch.ones([kdepth, conf.input_crop_size, conf.input_crop_size, 3]))).shape[-1]
         self.forward_shave = int(conf.input_crop_size * conf.scale_factor) - self.output_size
 
     def forward(self, input_tensor):
