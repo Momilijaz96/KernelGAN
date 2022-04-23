@@ -67,8 +67,11 @@ class DataGenerator(Dataset):
 
     def create_prob_maps(self, scale_factor):
         # Create loss maps for input image and downscaled one
-        loss_map_big = create_gradient_map(self.input_image)
-        loss_map_sml = create_gradient_map(imresize(im=self.input_image, scale_factor=scale_factor, kernel='cubic'))
+        #loss_map_big = create_gradient_map(self.input_image)
+        #loss_map_sml = create_gradient_map(imresize(im=self.input_image, scale_factor=scale_factor, kernel='cubic'))
+        loss_map_big = create_gradient_map(self.input_video)
+        loss_map_sml = create_gradient_map(imresize(im=self.input_video, scale_factor=scale_factor, kernel='cubic'))
+        
         # Create corresponding probability maps
         prob_map_big = create_probability_map(loss_map_big, self.d_input_shape)
         prob_map_sml = create_probability_map(nn_interpolation(loss_map_sml, int(1 / scale_factor)), self.g_input_shape)
