@@ -78,12 +78,17 @@ class DataGenerator(Dataset):
         """Shave pixels from edges to avoid code-bugs"""
         # Crop 10 pixels to avoid boundaries effects in synthetically generated examples
         if not real_image:
-            self.input_image = self.input_image[10:-10, 10:-10, :]
+            #self.input_image = self.input_image[10:-10, 10:-10, :]
+            self.input_video = self.input_video[:,10:-10, 10:-10, :]
         # Crop pixels for the shape to be divisible by the scale factor
         sf = int(1 / scale_factor)
-        shape = self.input_image.shape
-        self.input_image = self.input_image[:-(shape[0] % sf), :, :] if shape[0] % sf > 0 else self.input_image
-        self.input_image = self.input_image[:, :-(shape[1] % sf), :] if shape[1] % sf > 0 else self.input_image
+        #shape = self.input_image.shape
+        #self.input_image = self.input_image[:-(shape[0] % sf), :, :] if shape[0] % sf > 0 else self.input_image
+        #self.input_image = self.input_image[:, :-(shape[1] % sf), :] if shape[1] % sf > 0 else self.input_image
+        shape = self.input_video.shape
+        self.input_video = self.input_video[:,:-(shape[1] % sf), :, :] if shape[1] % sf > 0 else self.input_video
+        self.input_video = self.input_video[:,:, :-(shape[2] % sf), :] if shape[2] % sf > 0 else self.input_video
+
 
     def get_top_left(self, size, for_g, idx):
         """Translate the center of the index of the crop to it's corresponding top-left"""
