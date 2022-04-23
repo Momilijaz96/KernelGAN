@@ -31,7 +31,7 @@ def im2tensor(im_np):
 def vid2tensor(vid_np):
     """Copy the video to the gpu & converts to range [-1,1]"""
     vid_np = vid_np / 255.0 if vid_np.dtype == 'uint8' else vid_np
-    return torch.FloatTensor(np.transpose(im_np, (3, 0, 1, 2)) * 2.0 - 1.0).unsqueeze(0).cuda()
+    return torch.FloatTensor(np.transpose(vid_np, (3, 0, 1, 2)) * 2.0 - 1.0).unsqueeze(0).cuda()
 
 
 
