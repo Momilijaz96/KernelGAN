@@ -16,7 +16,7 @@ class Generator(nn.Module):
             feature_block += [nn.Conv3d(in_channels=conf.G_chan, out_channels=conf.G_chan, kernel_size=(struct[layer],struct[layer],struct[layer]), stride=(1,1,1),bias=False)]
         self.feature_block = nn.Sequential(*feature_block)
         # Final layer - Down-sampling and converting back to image
-        self.final_layer = nn.Conv3d(in_channels=conf.G_chan, out_channels=1, kernel_size=(struct[-1],struct[-1],struct[-1]),stride=(1,1/conf.scale_factor,1/conf.scale_factor),
+        self.final_layer = nn.Conv3d(in_channels=conf.G_chan, out_channels=1, kernel_size=(struct[-1],struct[-1],struct[-1]),stride=(1,1//conf.scale_factor,1//conf.scale_factor),
                                      bias=False)
 
         # Calculate number of pixels shaved in the forward pass
