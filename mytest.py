@@ -13,4 +13,4 @@ def test(conf):
         print("Discriminator input: ",d_in.shape)
         break
 conf=Config().parse()
-train(conf)
+test(conf)
