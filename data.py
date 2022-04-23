@@ -1,7 +1,7 @@
 import numpy as np
 from torch.utils.data import Dataset
 from imresize import imresize
-from util import read_video, read_image, create_gradient_map_video, im2tensor, create_probability_map_video, nn_interpolation
+from util import read_video, read_image, create_gradient_map_video, im2tensor, vid2tensor, create_probability_map_video, nn_interpolation
 import torch
 
 class DataGenerator(Dataset):
@@ -56,7 +56,7 @@ class DataGenerator(Dataset):
         crop_tube = self.input_video[:, top:top + size, left:left + size, :] #Tube extracted from input video
         if not for_g:  # Add noise to the image for d
             crop_tube += np.random.randn(*crop_tube.shape) / 255.0
-        return im2tensor(crop_tube)
+        return vid2tensor(crop_tube)
 
     def make_list_of_crop_indices(self, conf):
         iterations = conf.max_iters
