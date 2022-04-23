@@ -1,7 +1,7 @@
 import numpy as np
 from torch.utils.data import Dataset
 from imresize import imresize
-from util import read_video, read_image, create_gradient_map_video, im2tensor, create_probability_map, nn_interpolation
+from util import read_video, read_image, create_gradient_map_video, im2tensor, create_probability_map_video, nn_interpolation
 import torch
 
 class DataGenerator(Dataset):
@@ -73,8 +73,11 @@ class DataGenerator(Dataset):
         loss_map_sml = create_gradient_map_video(imresize(im=self.input_video, scale_factor=scale_factor, kernel='cubic'))
         
         # Create corresponding probability maps
-        prob_map_big = create_probability_map(loss_map_big, self.d_input_shape)
-        prob_map_sml = create_probability_map(nn_interpolation(loss_map_sml, int(1 / scale_factor)), self.g_input_shape)
+        #prob_map_big = create_probability_map(loss_map_big, self.d_input_shape)
+        #prob_map_sml = create_probability_map(nn_interpolation(loss_map_sml, int(1 / scale_factor)), self.g_input_shape)
+        prob_map_big = create_probability_map_video(loss_map_big, self.d_input_shape)
+        prob_map_sml = create_probability_map_video(nn_interpolation(loss_map_sml, int(1 / scale_factor)), self.g_input_shape)
+        
         return prob_map_big, prob_map_sml
 
     def shave_edges(self, scale_factor, real_image):
