@@ -1,9 +1,17 @@
-import torch
-from networks import Generator
 from configs import Config
+from data import DataGenerator
+from kernelGAN import KernelGAN
+from learner import Learner
+import tqdm
 
-conf = Config().parse()
-model = Generator(conf)
-inp=torch.randn((1, 12, 128 , 128)) #b x 3*t x h x w
-op=model(inp)
-print("Op shape: ",op.shape)
+def train(conf):
+    gan = KernelGAN(conf)
+    learner = Learner()
+    data = DataGenerator(conf, gan)
+    for iteration in tqdm.tqdm(range(conf.max_iters), ncols=60):
+        [g_in, d_in] = data.__getitem__(iteration)
+        print("Generator input: ",g_in.shape)
+        print("Discriminator input: ",d_in.shape)
+
+conf=Config().parse()
+train(conf)
