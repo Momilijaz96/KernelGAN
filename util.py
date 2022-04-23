@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from scipy.signal import convolve2d
 from torch.nn import functional as F
 from scipy.ndimage import measurements, interpolation
-
+import cv2
 from ZSSRforKernelGAN.ZSSR import ZSSR
 
 
@@ -48,6 +48,12 @@ def read_image(path):
     im = Image.open(path).convert('RGB')
     im = np.array(im, dtype=np.uint8)
     return im
+
+def read_video(path):
+    """Reads a video"""
+    cap = cv2.VideoCapture('chaplin.mp4')
+    
+
 
 
 def rgb2gray(im):

@@ -23,8 +23,8 @@ def main():
     import argparse
     # Parse the command line arguments
     prog = argparse.ArgumentParser()
-    prog.add_argument('--input-dir', '-i', type=str, default='test_images', help='path to image input directory.')
-    prog.add_argument('--output-dir', '-o', type=str, default='results', help='path to image output directory.')
+    prog.add_argument('--input-dir', '-i', type=str, default='test_video', help='path to directory containing test videos.')
+    prog.add_argument('--output-dir', '-o', type=str, default='results', help='path to high res output directory.')
     prog.add_argument('--X4', action='store_true', help='The wanted SR scale factor')
     prog.add_argument('--SR', action='store_true', help='when activated - ZSSR is not performed')
     prog.add_argument('--real', action='store_true', help='ZSSRs configuration is for real images')
