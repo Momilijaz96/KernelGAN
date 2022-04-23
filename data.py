@@ -1,8 +1,8 @@
 import numpy as np
 from torch.utils.data import Dataset
 from imresize import imresize
-from util import read_image, create_gradient_map, im2tensor, create_probability_map, nn_interpolation
-
+from util import read_video, read_image, create_gradient_map, im2tensor, create_probability_map, nn_interpolation
+import torch
 
 class DataGenerator(Dataset):
     """
@@ -17,7 +17,8 @@ class DataGenerator(Dataset):
         self.d_output_shape = self.d_input_shape - gan.D.forward_shave
 
         # Read input image
-        self.input_image = read_image(conf.input_image_path) / 255.
+        #self.input_image = read_image(conf.input_image_path) / 255.
+        self.input_video = read_video(conf.input_video_path) / 255. #DxHxWxC
         self.shave_edges(scale_factor=conf.scale_factor, real_image=conf.real_image)
 
         self.in_rows, self.in_cols = self.input_image.shape[0:2]
@@ -34,6 +35,12 @@ class DataGenerator(Dataset):
         d_in = self.next_crop(for_g=False, idx=idx)
 
         return g_in, d_in
+
+    def vid2images(self):
+        """Convert video file to images"""
+        video = self.input_video
+        torch.reshape(video,()) #DxHxWxC -> 
+
 
     def next_crop(self, for_g, idx):
         """Return a crop according to the pre-determined list of indices. Noise is added to crops for D"""

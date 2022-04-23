@@ -11,7 +11,8 @@ class Config:
 
         # Paths
         self.parser.add_argument('--img_name', default='image1', help='image name for saving purposes')
-        self.parser.add_argument('--input_image_path', default=os.path.dirname(__file__) + '/training_data/input.png', help='path to one specific image file')
+        #self.parser.add_argument('--input_image_path', default=os.path.dirname(__file__) + '/training_data/input.png', help='path to one specific image file')
+        self.parser.add_argument('--input_video_path', default=os.path.dirname(__file__) + '/training_data/input.mp4', help='path to one video file')
         self.parser.add_argument('--output_dir_path', default=os.path.dirname(__file__) + '/results', help='results path')
 
         # Sizes
