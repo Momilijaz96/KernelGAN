@@ -52,8 +52,8 @@ class KernelGAN:
         self.optimizer_G = torch.optim.Adam(self.G.parameters(), lr=conf.g_lr, betas=(conf.beta1, 0.999))
         self.optimizer_D = torch.optim.Adam(self.D.parameters(), lr=conf.d_lr, betas=(conf.beta1, 0.999))
 
-        print('*' * 60 + '\nSTARTED KernelGAN on: \"%s\"...' % conf.input_image_path)
-
+        #print('*' * 60 + '\nSTARTED KernelGAN on: \"%s\"...' % conf.input_image_path)
+        print('*' * 60 + '\nSTARTED KernelGAN on: \"%s\"...' % conf.input_video_path)
     # noinspection PyUnboundLocalVariable
     def calc_curr_k(self):
         """given a generator network, the function calculates the kernel it is imitating"""
