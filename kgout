@@ -1,16 +1,13 @@
 Scale Factor: X2 	ZSSR: False 	Real Image: False
 ************************************************************
-STARTED KernelGAN on: "/home/mo926312/Documents/kernelGAN/KernelGANtraining_data/input.mp4"...
+STARTED KernelGAN on: "/home/mo926312/Documents/kernelGAN/KernelGAN/training_data/input.mp4"...
 Traceback (most recent call last):
   File "mytest.py", line 16, in <module>
     test(conf)
   File "mytest.py", line 9, in test
     data = DataGenerator(conf, gan)
-  File "/home/mo926312/Documents/kernelGAN/KernelGAN/data.py", line 21, in __init__
-    self.input_video = read_video(conf.input_video_path) / 255. #DxHxWxC
-  File "/home/mo926312/Documents/kernelGAN/KernelGAN/util.py", line 68, in read_video
-    frames = torch.from_numpy(np.stack(frames))
-  File "<__array_function__ internals>", line 6, in stack
-  File "/home/mo926312/.conda/envs/fallenv/lib/python3.7/site-packages/numpy/core/shape_base.py", line 422, in stack
-    raise ValueError('need at least one array to stack')
-ValueError: need at least one array to stack
+  File "/home/mo926312/Documents/kernelGAN/KernelGAN/data.py", line 22, in __init__
+    self.shave_edges(scale_factor=conf.scale_factor, real_image=conf.real_image) #FIX later for ZSSR
+  File "/home/mo926312/Documents/kernelGAN/KernelGAN/data.py", line 81, in shave_edges
+    self.input_image = self.input_image[10:-10, 10:-10, :]
+AttributeError: 'DataGenerator' object has no attribute 'input_image'
