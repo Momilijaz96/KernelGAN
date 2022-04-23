@@ -138,6 +138,19 @@ def create_probability_map(loss_map, crop):
     prob_vec = prob_map.flatten() / prob_map.sum() if prob_map.sum() != 0 else np.ones_like(prob_map.flatten()) / prob_map.flatten().shape[0]
     return prob_vec
 
+def create_probability_map_video(loss_maps, crop):
+    prob_vecs=[]
+    for loss_map in loss_maps:
+        """Create a vector of probabilities corresponding to the loss map"""
+        # Blur the gradients to get the sum of gradients in the crop
+        blurred = convolve2d(loss_map, np.ones([crop // 2, crop // 2]), 'same') / ((crop // 2) ** 2)
+        # Zero pad s.t. probabilities are NNZ only in valid crop centers
+        prob_map = pad_edges(blurred, crop // 2)
+        # Normalize to sum to 1
+        prob_vec = prob_map.flatten() / prob_map.sum() if prob_map.sum() != 0 else np.ones_like(prob_map.flatten()) / prob_map.flatten().shape[0]
+        prob_vecs.append(prob_vec)
+    return prob_vecs
+
 
 def pad_edges(im, edge):
     """Replace image boundaries with 0 without changing the size"""
