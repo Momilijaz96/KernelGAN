@@ -9,14 +9,14 @@ class Generator(nn.Module):
         struct = conf.G_structure
         kdepth = conf.K_depth #kernel depth
         # First layer - Converting RGB image to latent space
-        self.first_layer = nn.Conv3d(in_channels=1, out_channels=conf.G_chan, kernel_size=(kdepth,struct[0],struct[0]), bias=False)
+        self.first_layer = nn.Conv3d(in_channels=1, out_channels=conf.G_chan, kernel_size=(kdepth,struct[0],struct[0]),stride=(kpdeth,1,1), bias=False)
 
         feature_block = []  # Stacking intermediate layer
         for layer in range(1, len(struct) - 1):
-            feature_block += [nn.Conv3d(in_channels=conf.G_chan, out_channels=conf.G_chan, kernel_size=(kdepth,struct[layer],struct[layer]), bias=False)]
+            feature_block += [nn.Conv3d(in_channels=conf.G_chan, out_channels=conf.G_chan, kernel_size=(kdepth,struct[layer],struct[layer]), stride=(kpdeth,1,1),bias=False)]
         self.feature_block = nn.Sequential(*feature_block)
         # Final layer - Down-sampling and converting back to image
-        self.final_layer = nn.Conv3d(in_channels=conf.G_chan, out_channels=1, kernel_size=(kdepth,struct[-1],struct[-1]),
+        self.final_layer = nn.Conv3d(in_channels=conf.G_chan, out_channels=1, kernel_size=(kdepth,struct[-1],struct[-1]),stride=(kpdeth,1,1),
                                      stride=int(1 / conf.scale_factor), bias=False)
 
         # Calculate number of pixels shaved in the forward pass
@@ -39,22 +39,23 @@ class Discriminator(nn.Module):
 
     def __init__(self, conf):
         super(Discriminator, self).__init__()
-
+        kdepth = conf.K_depth #kernel depth
         # First layer - Convolution (with no ReLU)
-        self.first_layer = nn.utils.spectral_norm(nn.Conv2d(in_channels=3, out_channels=conf.D_chan, kernel_size=conf.D_kernel_size, bias=True))
+        self.first_layer = nn.utils.spectral_norm(nn.Conv2d(in_channels=3, out_channels=conf.D_chan, kernel_size=(kdepth,conf.D_kernel_size,conf.D_kernel_size), stride=(kpdeth,1,1), bias=True))
         feature_block = []  # Stacking layers with 1x1 kernels
         for _ in range(1, conf.D_n_layers - 1):
-            feature_block += [nn.utils.spectral_norm(nn.Conv2d(in_channels=conf.D_chan, out_channels=conf.D_chan, kernel_size=1, bias=True)),
+            feature_block += [nn.utils.spectral_norm(nn.Conv2d(in_channels=conf.D_chan, out_channels=conf.D_chan, kernel_size=(kdepth,1,1),stride=(kpdeth,1,1), bias=True)),
                               nn.BatchNorm2d(conf.D_chan),
                               nn.ReLU(True)]
         self.feature_block = nn.Sequential(*feature_block)
-        self.final_layer = nn.Sequential(nn.utils.spectral_norm(nn.Conv2d(in_channels=conf.D_chan, out_channels=1, kernel_size=1, bias=True)),
+        self.final_layer = nn.Sequential(nn.utils.spectral_norm(nn.Conv2d(in_channels=conf.D_chan, out_channels=1, kernel_size=(kdepth,1,1),stride=(kpdeth,1,1), bias=True)),
                                          nn.Sigmoid())
 
         # Calculate number of pixels shaved in the forward pass
-        self.forward_shave = conf.input_crop_size - self.forward(torch.FloatTensor(torch.ones([1, 3, conf.input_crop_size, conf.input_crop_size]))).shape[-1]
+        self.forward_shave = conf.input_crop_size - self.forward(torch.FloatTensor(torch.ones([1, 3, kdepth, conf.input_crop_size, conf.input_crop_size]))).shape[-1]
 
     def forward(self, input_tensor):
+        #input_tensor: 1x3xkdepthx32x32
         receptive_extraction = self.first_layer(input_tensor)
         features = self.feature_block(receptive_extraction)
         return self.final_layer(features)
