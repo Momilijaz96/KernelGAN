@@ -42,11 +42,11 @@ class Discriminator(nn.Module):
         super(Discriminator, self).__init__()
         kdepth = conf.K_depth #kernel depth
         # First layer - Convolution (with no ReLU)
-        self.first_layer = (nn.Conv3d(in_channels=3, out_channels=conf.D_chan, kernel_size=(conf.D_kernel_size,conf.D_kernel_size,conf.D_kernel_size), stride=(1,1,1), bias=True))
+        self.first_layer =  nn.utils.spectral_norm(nn.Conv3d(in_channels=3, out_channels=conf.D_chan, kernel_size=(conf.D_kernel_size,conf.D_kernel_size,conf.D_kernel_size), stride=(1,1,1), bias=True))
         feature_block = []  # Stacking layers with 1x1 kernels
         for _ in range(1, conf.D_n_layers - 1):
             feature_block += [nn.utils.spectral_norm(nn.Conv3d(in_channels=conf.D_chan, out_channels=conf.D_chan, kernel_size=(1,1,1),stride=(1,1,1), bias=True)),
-                              nn.BatchNorm2d(conf.D_chan),
+                              nn.BatchNorm3d(conf.D_chan),
                               nn.ReLU(True)]
         self.feature_block = nn.Sequential(*feature_block)
         self.final_layer = nn.Sequential(nn.utils.spectral_norm(nn.Conv3d(in_channels=conf.D_chan, out_channels=1, kernel_size=(1,1,1),stride=(1,1,1), bias=True)),
