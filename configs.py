@@ -26,7 +26,7 @@ class Config:
         self.parser.add_argument('--G_kernel_size', type=int, default=13, help='The kernel size G is estimating')
         self.parser.add_argument('--D_n_layers', type=int, default=7, help='Discriminators depth')
         self.parser.add_argument('--D_kernel_size', type=int, default=7, help='Discriminators convolution kernels size')
-
+        self.parser.add_argument('--K_depth', type=int, default=60, help='# of frames in input video to set 3D kernel depth')
         # Iterations
         self.parser.add_argument('--max_iters', type=int, default=3000, help='# of iterations')
 
