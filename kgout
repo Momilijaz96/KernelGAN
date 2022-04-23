@@ -1,6 +1,6 @@
 Scale Factor: X2 	ZSSR: False 	Real Image: False
 ************************************************************
-STARTED KernelGAN on: "/home/mo926312/Documents/kernelGAN/KernelGAN/training_data/input.mp4"...
+STARTED KernelGAN on: "/home/mo926312/Documents/kernelGAN/KernelGANtraining_data/input.mp4"...
 Traceback (most recent call last):
   File "mytest.py", line 16, in <module>
     test(conf)
