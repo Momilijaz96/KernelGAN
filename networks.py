@@ -8,14 +8,14 @@ class Generator(nn.Module):
         super(Generator, self).__init__()
         struct = conf.G_structure
         # First layer - Converting RGB image to latent space
-        self.first_layer = nn.Conv3d(in_channels=1, out_channels=conf.G_chan, kernel_size=struct[0], bias=False)
+        self.first_layer = nn.Conv2d(in_channels=1, out_channels=conf.G_chan, kernel_size=struct[0], bias=False)
 
         feature_block = []  # Stacking intermediate layer
         for layer in range(1, len(struct) - 1):
-            feature_block += [nn.Conv3d(in_channels=conf.G_chan, out_channels=conf.G_chan, kernel_size=struct[layer], bias=False)]
+            feature_block += [nn.Conv2d(in_channels=conf.G_chan, out_channels=conf.G_chan, kernel_size=struct[layer], bias=False)]
         self.feature_block = nn.Sequential(*feature_block)
         # Final layer - Down-sampling and converting back to image
-        self.final_layer = nn.Conv3d(in_channels=conf.G_chan, out_channels=1, kernel_size=struct[-1],
+        self.final_layer = nn.Conv2d(in_channels=conf.G_chan, out_channels=1, kernel_size=struct[-1],
                                      stride=int(1 / conf.scale_factor), bias=False)
 
         # Calculate number of pixels shaved in the forward pass
