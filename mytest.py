@@ -5,7 +5,7 @@ from learner import Learner
 import tqdm
 
 def test(conf):
-   
+    gan = KernelGAN(conf)
     data = DataGenerator(conf, gan)
     for iteration in tqdm.tqdm(range(conf.max_iters), ncols=60):
         [g_in, d_in] = data.__getitem__(iteration)
