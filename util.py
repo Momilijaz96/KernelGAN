@@ -28,6 +28,12 @@ def im2tensor(im_np):
     im_np = im_np / 255.0 if im_np.dtype == 'uint8' else im_np
     return torch.FloatTensor(np.transpose(im_np, (2, 0, 1)) * 2.0 - 1.0).unsqueeze(0).cuda()
 
+def vid2tensor(vid_np):
+    """Copy the video to the gpu & converts to range [-1,1]"""
+    vid_np = vid_np / 255.0 if vid_np.dtype == 'uint8' else vid_np
+    return torch.FloatTensor(np.transpose(im_np, (3, 0, 1, 2)) * 2.0 - 1.0).unsqueeze(0).cuda()
+
+
 
 def map2tensor(gray_map):
     """Move gray maps to GPU, no normalization is done"""
