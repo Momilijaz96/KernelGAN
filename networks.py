@@ -21,13 +21,12 @@ class Generator(nn.Module):
                                      bias=False)
 
         # Calculate number of pixels shaved in the forward pass
-        self.output_size = self.forward(torch.FloatTensor(torch.ones([kdepth, conf.input_crop_size, conf.input_crop_size, 3]))).shape[-1]
+        self.output_size = self.forward(torch.FloatTensor(torch.ones([1,3,kdepth, conf.input_crop_size, conf.input_crop_size]))).shape[-1]
         self.forward_shave = int(conf.input_crop_size * conf.scale_factor) - self.output_size
 
     def forward(self, input_tensor):
-        #Input shape: DxHxWxC
-        D,H,W,C = input_tensor.shape
-        input_tensor = torch.reshape(input_tensor,(1,C,D,H,W))
+        #Input shape: BxCxDxHxW
+        B,C,D,H,W= input_tensor.shape
         # Swap axis of RGB video for the network to get a "batch" of size = 3 rather the 3 channels
         input_tensor = swap_axis(input_tensor)
         downscaled = self.first_layer(input_tensor)
