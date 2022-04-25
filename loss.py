@@ -84,7 +84,8 @@ class CentralizedLoss(nn.Module):
             r_sum, c_sum = torch.sum(k, dim=0).reshape(1, -1), torch.sum(k, dim=1).reshape(1, -1)
             losses.append(self.loss(torch.stack((torch.matmul(r_sum, self.indices) / torch.sum(k),
                                       torch.matmul(c_sum, self.indices) / torch.sum(k))), self.center))
-        return torch.mean(losses)
+        print(losses)
+        return torch.mean(torch.tensor(losses))
 
 
 class BoundariesLoss(nn.Module):
