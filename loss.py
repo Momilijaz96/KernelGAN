@@ -1,3 +1,4 @@
+from turtle import down
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
@@ -51,8 +52,9 @@ class DownScaleLoss(nn.Module):
         print("Downscaled g op: ",g_output.shape)
         print("Downscaled bicubic kernel op: ",downscaled.shape)
         # Shave the downscaled to fit g_output
-        return self.loss(g_output, shave_a2b(g_output,downscaled))
-
+        #return self.loss(g_output, shave_a2b(downscaled, g_output))
+        downscaled = downscaled[:,:,:-1,:,:]
+        return self.loss(g_output, shave_a2b(downscaled, g_output))
 
 class SumOfWeightsLoss(nn.Module):
     """ Encourages the kernel G is imitating to sum to 1 """

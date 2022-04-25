@@ -33,12 +33,9 @@ def vid2tensor(vid_np):
     vid_np = vid_np / 255.0 if vid_np.dtype == 'uint8' else vid_np
     return torch.FloatTensor(np.transpose(vid_np, (3, 0, 1, 2)) * 2.0 - 1.0).unsqueeze(0).cuda()
 
-
-
 def map2tensor(gray_map):
     """Move gray maps to GPU, no normalization is done"""
     return torch.FloatTensor(gray_map).unsqueeze(0).unsqueeze(0).cuda()
-
 
 def resize_tensor_w_kernel(im_t, k, sf=None):
     """Convolves a tensor with a given bicubic kernel according to scale factor"""
