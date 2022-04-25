@@ -59,7 +59,7 @@ class KernelGAN:
         """given a generator network, the function calculates the kernel it is imitating"""
         delta = torch.Tensor([1.]).unsqueeze(0).unsqueeze(-1).unsqueeze(-1).unsqueeze(-1).cuda()
         for ind, w in enumerate(self.G.parameters()):
-            curr_k = F.conv3d(delta, w, padding=self.conf.G_kernel_size - 1) if ind == 0 else F.conv2d(curr_k, w)
+            curr_k = F.conv3d(delta, w, padding=self.conf.G_kernel_size - 1) if ind == 0 else F.conv3d(curr_k, w)
         self.curr_k = curr_k.squeeze().flip([0, 1])
 
     def train(self, g_input, d_input):
