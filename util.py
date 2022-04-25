@@ -46,7 +46,7 @@ def resize_tensor_w_kernel(im_t, k, sf=None):
     k = k.expand(im_t.shape[1], im_t.shape[1], k.shape[0], k.shape[1], k.shape[2])
     # Calculate padding
     padding = (k.shape[-1] - 1) // 2
-    return F.conv3d(im_t, k, stride=(1,round(1 / sf),round(1 / sf))) #, padding=padding)
+    return F.conv3d(im_t, k, stride=(1,round(1 / sf),round(1 / sf)), padding=(1,padding,padding))
 
 
 def read_image(path):
