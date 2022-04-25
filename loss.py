@@ -82,7 +82,7 @@ class CentralizedLoss(nn.Module):
         losses = []
         for k in kernel:
             print(k.shape)
-            r_sum, c_sum = torch.sum(k, dim=0).reshape(1, -1), torch.sum(k, dim=1).reshape(1, -1), torch.sum(k, dim=2).reshape(1, -1)
+            r_sum, c_sum = torch.sum(k, dim=0).reshape(1, -1), torch.sum(k, dim=1).reshape(1, -1)
             losses.append(self.loss(torch.stack((torch.matmul(r_sum, self.indices) / torch.sum(k),
                                       torch.matmul(c_sum, self.indices) / torch.sum(k))), self.center))
         return losses
