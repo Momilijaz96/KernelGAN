@@ -9,7 +9,7 @@ class Generator(nn.Module):
         struct = conf.G_structure
         kdepth = conf.K_depth #kernel depth
         # First layer - Converting RGB image to latent space
-        self.first_layer = nn.Conv3d(in_channels=1, out_channels=conf.G_chan, kernel_size=(struct[0],struct[0],struct[0]),stride=(1,1,1), bias=False)
+        self.first_layer = nn.Conv3d(in_channels=1, out_channels=conf.G_chan, kernel_size=(struct[0],struct[0],struct[0]),stride=(1,1,1), padding='same', bias=False)
 
         feature_block = []  # Stacking intermediate layer
         for layer in range(1, len(struct) - 1):
