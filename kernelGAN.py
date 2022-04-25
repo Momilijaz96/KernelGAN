@@ -90,6 +90,7 @@ class KernelGAN:
     def calc_constraints(self, g_pred):
         # Calculate K which is equivalent to G
         self.calc_curr_k()
+        print("Current k dim: ",self.curr_k.shape)
         # Calculate constraints
         self.loss_bicubic = self.bicubic_loss.forward(g_input=self.g_input, g_output=g_pred)
         loss_boundaries = self.boundaries_loss.forward(kernel=self.curr_k)
