@@ -42,11 +42,11 @@ def map2tensor(gray_map):
 
 def resize_tensor_w_kernel(im_t, k, sf=None):
     """Convolves a tensor with a given bicubic kernel according to scale factor"""
-    # Expand dimensions to fit convolution: [out_channels, in_channels, k_height, k_width]
-    k = k.expand(im_t.shape[1], im_t.shape[1], k.shape[0], k.shape[1])
+    # Expand dimensions to fit convolution: [out_channels, in_channels, k_depth, k_height, k_width]
+    k = k.expand(im_t.shape[1], im_t.shape[1], k.shape[0], k.shape[1], k.shape[2])
     # Calculate padding
     padding = (k.shape[-1] - 1) // 2
-    return F.conv2d(im_t, k, stride=round(1 / sf), padding=padding)
+    return F.conv3d(im_t, k, stride=round(1 / sf), padding=padding)
 
 
 def read_image(path):
