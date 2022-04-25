@@ -12,5 +12,6 @@ def test(conf):
         [g_in, d_in] = data.__getitem__(iteration)
         gan.train(g_in, d_in)
         learner.update(iteration, gan)
+    gan.finish()
 conf=Config().parse()
 test(conf)
