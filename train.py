@@ -38,7 +38,7 @@ def main():
 
 
 def create_params(filename, args):
-    params = ['--input_image_path', os.path.join(args.input_dir, filename),
+    params = ['--input_video_path', os.path.join(args.input_dir, filename),
               '--output_dir_path', os.path.abspath(args.output_dir),
               '--noise_scale', str(args.noise_scale)]
     if args.X4:
