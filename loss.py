@@ -52,7 +52,7 @@ class DownScaleLoss(nn.Module):
         # Shave the downscaled to fit g_output
         #return self.loss(g_output, shave_a2b(downscaled, g_output))
         g_output = g_output[:,:,:-1,:,:]
-        return self.loss(g_output, shave_a2b(downscaled, g_output))
+        return self.loss(g_output, downscaled)
 
 class SumOfWeightsLoss(nn.Module):
     """ Encourages the kernel G is imitating to sum to 1 """
@@ -96,7 +96,6 @@ class BoundariesLoss(nn.Module):
 
     def forward(self, kernel):
         losses = []
-        print(kernel.shape)
         for k in kernel:
             losses.append(self.loss(k * self.mask, self.zero_label))
         return torch.mean(torch.tensor(losses))
