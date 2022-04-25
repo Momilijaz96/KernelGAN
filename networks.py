@@ -31,8 +31,9 @@ class Generator(nn.Module):
         input_tensor = swap_axis(input_tensor)
         downscaled = self.first_layer(input_tensor)
         features = self.feature_block(downscaled)
+        print("Input to final downscaling layer generator: ",features.shape)
         output = self.final_layer(features)
-        return swap_axis(output) #1xCxDxHxW
+        return swap_axis(output) #1xCxDxhxw
 
 
 class Discriminator(nn.Module):
