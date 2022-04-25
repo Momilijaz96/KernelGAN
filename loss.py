@@ -51,9 +51,10 @@ class DownScaleLoss(nn.Module):
         downscaled = resize_tensor_w_kernel(im_t=g_input, k=self.bicubic_kernel, sf=self.scale_factor)
         # Shave the downscaled to fit g_output
         #return self.loss(g_output, shave_a2b(downscaled, g_output))
+        
+        g_output = g_output[:,:,:-1,:,:]
         print("L1 input: ",g_output.shape)
         print("L1 target: ",downscaled.shape)
-        g_output = g_output[:,:,:-1,:,:]
         return self.loss(g_output, downscaled)
 
 class SumOfWeightsLoss(nn.Module):
