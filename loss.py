@@ -95,7 +95,10 @@ class BoundariesLoss(nn.Module):
         self.loss = nn.L1Loss()
 
     def forward(self, kernel):
-        return self.loss(kernel * self.mask, self.zero_label)
+        losses = []
+        for k in kernel:
+            losses.append(self.loss(k * self.mask, self.zero_label))
+        return torch.mean(torch.tensor(losses))
 
 
 class SparsityLoss(nn.Module):
