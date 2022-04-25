@@ -51,7 +51,7 @@ class DownScaleLoss(nn.Module):
         print("Downscaled g op: ",g_output.shape)
         print("Downscaled bicubic kernel op: ",downscaled.shape)
         # Shave the downscaled to fit g_output
-        return self.loss(g_output, shave_a2b(downscaled, g_output))
+        return self.loss(g_output, shave_a2b(g_output,downscaled))
 
 
 class SumOfWeightsLoss(nn.Module):
