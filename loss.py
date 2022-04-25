@@ -77,13 +77,13 @@ class CentralizedLoss(nn.Module):
         self.center = Variable(torch.FloatTensor([wanted_center_of_mass, wanted_center_of_mass]).cuda(), requires_grad=False)
         self.loss = nn.MSELoss()
 
-    def forward(self, kernels):
+    def forward(self, kernel):
         """Return the loss over the distance of center of mass from kernel center """
         losses = []
-        for kernel in kernels:
-            r_sum, c_sum = torch.sum(kernel, dim=0).reshape(1, -1), torch.sum(kernel, dim=1).reshape(1, -1), torch.sum(kernel, dim=2).reshape(1, -1)
-            losses.append(self.loss(torch.stack((torch.matmul(r_sum, self.indices) / torch.sum(kernel),
-                                      torch.matmul(c_sum, self.indices) / torch.sum(kernel))), self.center))
+        for k in kernel:
+            r_sum, c_sum = torch.sum(k, dim=0).reshape(1, -1), torch.sum(k, dim=1).reshape(1, -1), torch.sum(k, dim=2).reshape(1, -1)
+            losses.append(self.loss(torch.stack((torch.matmul(r_sum, self.indices) / torch.sum(k),
+                                      torch.matmul(c_sum, self.indices) / torch.sum(k))), self.center))
         return losses
 
 
