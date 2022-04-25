@@ -96,6 +96,7 @@ class BoundariesLoss(nn.Module):
 
     def forward(self, kernel):
         losses = []
+        print(kernel.shape)
         for k in kernel:
             losses.append(self.loss(k * self.mask, self.zero_label))
         return torch.mean(torch.tensor(losses))
