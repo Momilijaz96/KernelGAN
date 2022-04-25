@@ -28,6 +28,7 @@ class Generator(nn.Module):
         #Input shape: BxCxDxHxW
         B,C,D,H,W= input_tensor.shape
         # Swap axis of RGB video for the network to get a "batch" of size = 3 rather the 3 channels
+        print("Generator input tensor: ",input_tensor.shape)
         input_tensor = swap_axis(input_tensor)
         downscaled = self.first_layer(input_tensor)
         features = self.feature_block(downscaled)
