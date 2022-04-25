@@ -48,6 +48,8 @@ class DownScaleLoss(nn.Module):
 
     def forward(self, g_input, g_output):
         downscaled = resize_tensor_w_kernel(im_t=g_input, k=self.bicubic_kernel, sf=self.scale_factor)
+        print("Downscaled g op: ",g_output.shape)
+        print("Downscaled bicubic kernel op: ",downscaled.shape)
         # Shave the downscaled to fit g_output
         return self.loss(g_output, shave_a2b(downscaled, g_output))
 
