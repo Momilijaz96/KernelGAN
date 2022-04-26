@@ -38,8 +38,9 @@ def main():
     for path, subdirs, files in os.walk(os.path.abspath(args.input_dir)):
         for name in files:
             filename = (os.path.join(path, name))
-            conf = Config().parse(create_params(filename, args))
-            train(conf)
+            #conf = Config().parse(create_params(filename, args))
+            #train(conf)
+            print(filename)
     prog.exit(0)
 
 
