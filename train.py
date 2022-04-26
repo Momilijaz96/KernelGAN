@@ -38,14 +38,14 @@ def main():
     for path, subdirs, files in os.walk(os.path.abspath(args.input_dir)):
         for name in files:
             filename = (os.path.join(path, name))
-            #conf = Config().parse(create_params(filename, args))
-            #train(conf)
-            print(filename)
+            conf = Config().parse(create_params(filename, args))
+            train(conf)
+            
     prog.exit(0)
 
 
 def create_params(filename, args):
-    params = ['--input_video_path', os.path.join(args.input_dir, filename),
+    params = ['--input_video_path', filename,
               '--output_dir_path', os.path.abspath(args.output_dir),
               '--noise_scale', str(args.noise_scale)]
     if args.X4:
