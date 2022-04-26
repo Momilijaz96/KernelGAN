@@ -1,6 +1,5 @@
 import os
 import tqdm
-
 from configs import Config
 from data import DataGenerator
 from kernelGAN import KernelGAN
@@ -31,9 +30,16 @@ def main():
     prog.add_argument('--noise_scale', type=float, default=1., help='ZSSR uses this to partially de-noise images')
     args = prog.parse_args()
     # Run the KernelGAN sequentially on all images in the input directory
+    '''
     for filename in os.listdir(os.path.abspath(args.input_dir)):
         conf = Config().parse(create_params(filename, args))
         train(conf)
+    '''
+    for path, subdirs, files in os.walk(os.path.abspath(args.input_dir)):
+        for name in files:
+            filename = (os.path.join(path, name))
+            conf = Config().parse(create_params(filename, args))
+            train(conf)
     prog.exit(0)
 
 
